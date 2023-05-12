@@ -22,7 +22,7 @@ function Invoke-AppConfigRequest {
     $EndpointHost = $Endpoint -replace '^https?://(.*)$', '$1'
     $ContentHash = [Convert]::ToBase64String(
         [System.Security.Cryptography.HashAlgorithm]::Create('sha256').ComputeHash(
-            [System.Text.Encoding]::UTF8.GetBytes($(if ($Body -ne $null) { "$Body" } else { '' }))
+            [System.Text.Encoding]::UTF8.GetBytes($(if ($null -ne $Body) { "$Body" } else { '' }))
         )
     )
     $StringToSign = "$Method`n$RequestUri`n$UtcNow;$EndpointHost;$ContentHash"
@@ -79,5 +79,5 @@ function Get-AppConfigKeyValue {
         $RequestUri += '&label=%00'  # Matches KV without a label.
     }
 
-    (Invoke-AppConfigRequest -ConnectionString $ConnectionString -RequestUri $RequestUri).items
+    (Invoke-AppConfigRequest -ConnectionString $ConnectionString -Method $Method -RequestUri $RequestUri).items
 }
