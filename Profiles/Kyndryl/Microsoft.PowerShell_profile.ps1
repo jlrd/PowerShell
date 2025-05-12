@@ -64,6 +64,10 @@ Function Start-Monitor
 			$y = ($pos.Y % 500) + 1
 			[System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point($x, $y)
 		}
+		## End of monitor awareness
+		[console]::beep(500,500)
+		[console]::beep(700,500)
+		[console]::beep(900,500)
 	}
 	End
 	{
