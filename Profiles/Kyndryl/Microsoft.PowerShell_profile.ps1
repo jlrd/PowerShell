@@ -1,5 +1,6 @@
 ## ENV setup
-[Environment]::SetEnvironmentVariable('FigletRoot',"$ENV:USERPROFILE\Documents\PowerShell\Includes\FigletFonts")
+[Environment]::SetEnvironmentVariable('FigletRoot',"$ENV:USERPROFILE\OneDrive - kyndryl\Documents\PowerShell\SpectreFonts")
+[Environment]::SetEnvironmentVariable('POSH_THEMES_PATH',"$ENV:USERPROFILE\OneDrive - kyndryl\Documents\PowerShell\OhMyPoshThemes")
 
 ## Oh My Posh prompt setup
 oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\blue-owl.omp.json" | Invoke-Expression
