@@ -1,5 +1,6 @@
 ## ENV setup
-[Environment]::SetEnvironmentVariable('FigletRoot',"$ENV:USERPROFILE\Documents\PowerShell\Includes\FigletFonts")
+[Environment]::SetEnvironmentVariable('FigletRoot',"$ENV:USERPROFILE\OneDrive - kyndryl\Documents\PowerShell\SpectreFonts")
+[Environment]::SetEnvironmentVariable('POSH_THEMES_PATH',"$ENV:USERPROFILE\OneDrive - kyndryl\Documents\PowerShell\OhMyPoshThemes")
 
 ## Oh My Posh prompt setup
 oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\blue-owl.omp.json" | Invoke-Expression
@@ -15,7 +16,7 @@ if (Get-Module -ListAvailable -Name PwshSpectreConsole) {
     Format-SpectreAligned -HorizontalAlignment Right -VerticalAlignment Middle
 }
 
-Function Start-Monitor
+function Start-Monitor
 {
 	[Cmdletbinding()]
 	Param (
@@ -64,9 +65,49 @@ Function Start-Monitor
 			$y = ($pos.Y % 500) + 1
 			[System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point($x, $y)
 		}
+		## End of monitor awareness
+		[console]::beep(500,500)
+		[console]::beep(700,500)
+		[console]::beep(900,500)
 	}
 	End
 	{
 		Write-Verbose " [$($MyInvocation.InvocationName)] :: End Process"
 	}
+}
+
+function New-RDPFile {
+[CmdletBinding()]
+param (
+    [Parameter()]
+    [string]
+    $Path = "$ENV:OneDrive\Documents\RemoteDesktops\",
+    [Parameter()]
+    [string]
+    $ComputerName,
+    [Parameter()]
+    [string]
+    $IpAddress,
+    [Parameter()]
+    [string]
+    $UserName
+)
+
+# Import the StringBuilder class
+
+# Add-Type -AssemblyName "System.Text"
+
+# Create a new StringBuilder object
+$RdpFileBuilder = [System.Text.StringBuilder]::new()
+
+# Append strings
+[void]$RdpFileBuilder.AppendLine("alternate full address:s:${ComputerName}")
+[void]$RdpFileBuilder.AppendLine("full address:s:${IpAddress}")
+[void]$RdpFileBuilder.AppendLine("prompt for credentials:i:1")
+[void]$RdpFileBuilder.AppendLine("administrative session:i:1")
+[void]$RdpFileBuilder.AppendLine("username:s:${UserName}")
+
+$OutputPath = Join-Path -Path $Path -ChildPath "${ComputerName}.rdp"
+
+$RdpFileBuilder.ToString() | Out-File -FilePath $OutputPath -Force
 }
