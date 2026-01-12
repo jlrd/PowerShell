@@ -21,7 +21,9 @@ function Start-Monitor
 	[Cmdletbinding()]
 	Param (
 		[Parameter(Mandatory = $false)]
-		[string]$Minutes
+		[string]$Minutes,
+		[Parameter(Mandatory = $false)]
+		[switch]$Silent
 	)
 
 	Begin
@@ -66,9 +68,13 @@ function Start-Monitor
 			[System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point($x, $y)
 		}
 		## End of monitor awareness
-		[console]::beep(500,500)
-		[console]::beep(700,500)
-		[console]::beep(900,500)
+		if ($Silent) {
+			Write-Host 'The end is here ...'
+		} else {
+			[console]::beep(500,500)
+			[console]::beep(700,500)
+			[console]::beep(900,500)			
+		}
 	}
 	End
 	{
